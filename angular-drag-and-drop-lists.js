@@ -402,17 +402,17 @@
         var dropEffect = getDropEffect(event, ignoreDataTransfer);
         if (dropEffect == 'none') return stopDragover();
 
+        // The drop is definitely going to happen now, store the dropEffect.
+        dndState.dropEffect = dropEffect;
+        if (!ignoreDataTransfer) {
+          event.dataTransfer.dropEffect = dropEffect;
+        }
+
         // Invoke the callback, which can transform the transferredObject and even abort the drop.
         var index = getPlaceholderIndex();
         if (attr.dndDrop) {
           data = invokeCallback(attr.dndDrop, event, dropEffect, itemType, index, data);
           if (!data) return stopDragover();
-        }
-
-        // The drop is definitely going to happen now, store the dropEffect.
-        dndState.dropEffect = dropEffect;
-        if (!ignoreDataTransfer) {
-          event.dataTransfer.dropEffect = dropEffect;
         }
 
         // Insert the object into the array, unless dnd-drop took care of that (returned true).
